@@ -13,10 +13,10 @@ From hikers to nature photographers to campers, anyone who would like to explore
 
 ### Project Approach
 #### Database schema 
-![database schema](proposal_db_schema.png)
+![database schema](/images/proposal_db_schema.png)
 
 Potential schema for further study implementation:
-![database schema further study](proposal_db_schema_fs.png)
+![database schema further study](/images/proposal_db_schema_fs.png)
 
 #### Anticipated challenges
 - API availability and stability
@@ -46,7 +46,6 @@ User password will be hashed and stored. Authentication will be in place to vali
 5.	Favorite parks page: show list of favorite parks with options to see more
 6.	Visited parks page: show ‘collected’ parks as cards and total parks tally
 7.	Logout
-
 
 ### Stretch Goals/ Further Study
 - Park recommendation
