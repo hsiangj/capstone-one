@@ -12,43 +12,44 @@ From hikers to nature photographers to campers, anyone who would like to explore
 - Completed parks: user's completed parks
 
 ### Project Approach
-#### Database schema 
-![database schema](/images/proposal_db_schema.png)
+##### Database schema 
+<img src='/images/proposal_db_schema.png' width='500'>
 
 Potential schema for further study implementation:
-![database schema further study](/images/proposal_db_schema_fs.png)
+<br>
+<img src='/images/proposal_db_schema_fs.png' width='500'>
 
-#### Anticipated challenges
+##### Anticipated challenges
 - API availability and stability
 - Extraction of desired API data that fits the goal of the project
   - Determining which type, if any, of the API data to store in database
 - Deployment to Heroku 
 - Balance of time to complete the project
 
-#### Data security
+##### Data security
 User password will be hashed and stored. Authentication will be in place to validate user. 
 
-#### Functionality/features 
+##### Functionality/features 
 - User-friendly, responsive interface
 - A search option/ browse park by topic, eg. music, American revolution, women’s history 
 - Option to manage saved data/parks
 - Card-like collection
 - Visited park count
 
-#### User flow
+##### User flow
 1.	Homepage: user signup or login
-  •	Signup: requires username and password to pass requirement validation
-  •	Login: username and password authentication
+  * Signup: requires username and password to pass requirement validation
+  *	Login: username and password authentication
 2.	Successful signup or login redirects user to search page 
-  •	Navigation bar will change to show logout, username, saved parks and visited parks
+  - Navigation bar will change to show username, links to logout, saved parks and visited parks
 3.	Search by typing in park name in search bar or filter by state or click on a park topic
 4.	Browse parks populated. Click to see more, add to favorite, or add to collection. 
 5.	Favorite parks page: show list of favorite parks with options to see more
 6.	Visited parks page: show ‘collected’ parks as cards and total parks tally
 7.	Logout
 
-### Stretch Goals/ Further Study
-- Park recommendation
-- Pagination
-- Collected park cards arranged by card desk
-- Park sharing by email 
+##### Stretch Goals/ Further Study
+* Park recommendation
+* Pagination
+* Collected park cards arranged by card desk
+* Park sharing by email 
