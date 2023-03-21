@@ -32,6 +32,7 @@ User password will be hashed and stored. Authentication will be in place to vali
 ##### Functionality/features 
 - User-friendly, responsive interface
 - A search option/ browse park by topic, eg. music, American revolution, women’s history 
+- Pagination
 - Option to manage saved data/parks
 - Card-like collection
 - Visited park count
@@ -50,6 +51,5 @@ User password will be hashed and stored. Authentication will be in place to vali
 
 ##### Stretch Goals/ Further Study
 * Park recommendation
-* Pagination
-* Collected park cards arranged by card desk
+* Collected park cards arranged by card deck
 * Park sharing by email 
