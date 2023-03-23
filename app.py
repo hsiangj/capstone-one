@@ -2,10 +2,11 @@ import os
 
 from flask import Flask, render_template, redirect, session, flash, request, g
 from flask_debugtoolbar import DebugToolbarExtension
-from secret import key
+from sqlalchemy.exc import IntegrityError
 
 from models import db, connect_db, User, FavoritePark, CollectedPark
 from forms import RegisterForm, LoginForm
+from secret import key
 
 CURR_USER_KEY = 'curr_user'
 
@@ -47,7 +48,10 @@ def do_logout():
 
 @app.route('/')
 def homepage():
-  """Show homepage. """
+  """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
+  if g.user:
+    return render_template('home.html')
+
   return render_template ('home-anon.html')
 
 
@@ -63,7 +67,7 @@ def register_user():
   form = RegisterForm()
 
   if form.validate_on_submit():
-    
+    try:
       user = User.signup(
         username=form.username.data,
         password=form.password.data,
@@ -73,8 +77,12 @@ def register_user():
       )
       db.session.add(user)
       db.session.commit()
+    except IntegrityError:
+      flash('Username already taken, try a different one!', 'danger')
+      return render_template('signup.html', form=form)
 
-      return redirect('/')
+    do_login(user)
+    return redirect('/')
 
   else:  
     return render_template('signup.html', form=form)
