@@ -51,12 +51,12 @@ def homepage():
   """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
   if g.user:
     return render_template('home.html')
-
-  return render_template ('home-anon.html')
+  else:
+    return render_template ('home-anon.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
-def register_user():
+def signup():
   """Handle user signup. Create new user and add to DB. Redirect to home page.
     If form not valid, present form. 
     If there already is a user with that username: flash message and re-present form.
@@ -87,3 +87,32 @@ def register_user():
   else:  
     return render_template('signup.html', form=form)
 
+@app.route('/login')
+def login():
+  """Handle user login."""
+  form = LoginForm()
+
+  if form.validate_on_submit():
+    user = User.authenticate(form.username.data, form.password.data)
+
+    if user:
+      do_login(user)
+      flash(f'Welcome back, {user.username}!', 'success')
+      return redirect('/')
+    
+    else:
+      flash('Invalid credentials.', 'warning')
+
+  return render_template('login.html', form=form)
+
+
+  
+  
+
+
+@app.route('/logout')
+def logout():
+  """Handle user logout."""
+  do_logout()
+  flash("See you later!", 'success')
+  return redirect('/login')
