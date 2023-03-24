@@ -7,6 +7,8 @@
   <title>Park Collector</title>
 
   <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
   <script src="https://unpkg.com/jquery"></script>
 </head>
 <body>
@@ -15,12 +17,12 @@
   <a class="navbar-brand" href="/">ParkCollector</a>
   <ul class="nav navbar-nav">
     {% if not g.user %}
-    <li><a class="nav-link" href="/signup">Sign up</a></li>
-    <li><a class="nav-link" href="/login">Login</a></li>
+    <li class="nav-item"><a class="nav-link" href="/signup">Sign up</a></li>
+    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
   </ul>
     {% else %}
   <ul class="nav navbar-nav navbar-right">
-    <li><a class="nav-link" href="/logout">Logout</a></li>
+    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
     {% endif %}
   </ul>
 </nav>
