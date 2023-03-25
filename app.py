@@ -131,11 +131,20 @@ def get_parks_by_topic(topic_id):
   park_topic = requests.get(f'{API_BASE_URL}/topics/parks', 
                             headers=HEADERS,
                             params={'id': topic_id, 'limit':PARK_LIMIT})
+  park_topic_data = park_topic.json()
 
-  return render_template('/parks/show.html', parks=park_topic.json())
+  return render_template('/parks/show.html', parks=park_topic_data, topic_id=topic_id)
 
 
-
+@app.route('/park/<code>', methods=['GET'])
+def get_single_park(code):
+  """Get a national park by park code."""
+  park = requests.get(f'{API_BASE_URL}/parks', 
+                              headers=HEADERS,
+                              params={'parkCode': code, 'limit': PARK_LIMIT})
+  park_data = park.json()
+  
+  return render_template('/parks/park.html', park=park_data)
 
 
 
@@ -152,10 +161,10 @@ def list_topics():
 @app.route('/api/park/<code>', methods=['GET'])
 def get_park(code):
   """Return JSON with info for specific park."""
-  park = requests.get(f'{API_BASE_URL}/parks', 
+  one_park = requests.get(f'{API_BASE_URL}/parks', 
                             headers=HEADERS,
                             params={'parkCode': code, 'limit': PARK_LIMIT})
-  return jsonify(park.json())
+  return jsonify(one_park.json())
 
 
 ##########
