@@ -1,14 +1,18 @@
 import os
 
-from flask import Flask, render_template, redirect, session, flash, request, g
+from flask import Flask, render_template, redirect, session, flash, request, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+import requests
 
 from models import db, connect_db, User, FavoritePark, CollectedPark
 from forms import RegisterForm, LoginForm
 from secret import key
 
 CURR_USER_KEY = 'curr_user'
+API_BASE_URL = "https://developer.nps.gov/api/v1"
+HEADERS = {"X-Api-Key":key}
+PARK_LIMIT = 450
 
 app = Flask(__name__)
 app.app_context().push()
@@ -20,6 +24,12 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
+
+
+
+
+
+
 
 ##########
 # User signup/login/logout
@@ -87,7 +97,7 @@ def signup():
   else:  
     return render_template('signup.html', form=form)
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
   """Handle user login."""
   form = LoginForm()
@@ -105,14 +115,56 @@ def login():
 
   return render_template('login.html', form=form)
 
-
-  
-  
-
-
 @app.route('/logout')
 def logout():
   """Handle user logout."""
   do_logout()
   flash("See you later!", 'success')
   return redirect('/login')
+
+##########
+# Park routes
+
+@app.route('/parks/topic/<topic_id>', methods=['GET'])
+def get_parks_by_topic(topic_id):
+  """Get all national parks by a particular topic."""
+  park_topic = requests.get(f'{API_BASE_URL}/topics/parks', 
+                            headers=HEADERS,
+                            params={'id': topic_id, 'limit':PARK_LIMIT})
+
+  return render_template('/parks/show.html', parks=park_topic.json())
+
+
+
+
+
+
+##########
+# API routes
+@app.route('/api/topics', methods=['GET'])
+def list_topics():
+  """Return JSON with all park topics."""
+  all_topics = requests.get(f'{API_BASE_URL}/topics', 
+                            headers=HEADERS,
+                            params={'limit': PARK_LIMIT})
+  return jsonify(all_topics.json())
+
+@app.route('/api/park/<code>', methods=['GET'])
+def get_park(code):
+  """Return JSON with info for specific park."""
+  park = requests.get(f'{API_BASE_URL}/parks', 
+                            headers=HEADERS,
+                            params={'parkCode': code, 'limit': PARK_LIMIT})
+  return jsonify(park.json())
+
+
+##########
+# Helper functions to be moved
+
+
+
+
+
+
+
+
