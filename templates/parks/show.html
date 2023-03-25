@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="parks-list">
+<h2>Topic: {{parks['data'][0]['name']}}</h2>
+  
+
+<!-- Card -->
+<div class="row">
+  {% for park in parks['data'][0]['parks']%}
+  <div class="col-lg-3 col-md-4">
+    <div class="card h-100">
+      <!-- <img class="card-img-top" id="park-img" src="" alt="{{park['fullName']}} image"> -->
+      <div class="card-body">
+        <h6 class="card-title">{{park['fullName']}} </h6>
+        <p class="card-text">Location: {{park['states']}}</p>
+        
+        <form>
+          <button class="btn btn-outline-info btn-sm" formaction="/park/{{park['parkCode']}}" formmethod="GET">
+            Learn more
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div> 
+
+
+
+</div>
+
+
+{% endblock %}
+
+<!-- parks['data'][0]['parks'][0]['fullName'] -->

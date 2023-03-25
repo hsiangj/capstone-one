@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  overflow: hidden;
+}
+
+.park-img {
+  width: 100%;
+  max-height: auto;
+}
