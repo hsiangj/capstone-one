@@ -146,6 +146,19 @@ def get_single_park(code):
   
   return render_template('/parks/park.html', park=park_data)
 
+##########
+# User routes
+@app.route('/users/<int:user_id>/favorite', methods=['GET'])
+def show_favorite(user_id):
+  """Show favorite parks for a particular user."""
+  if not g.user:
+    flash("Access unauthorized.", "danger")
+    return redirect('/')
+  
+  user = User.query.get_or_404(user_id)
+  return render_template('users/favorite.html', user=user)
+
+
 
 
 ##########
