@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 
-from models import db, connect_db, User, FavoritePark, CollectedPark
+from models import db, connect_db, User, CollectedPark, BookmarkedPark
 from forms import RegisterForm, LoginForm
 from secret import key
 
@@ -25,9 +25,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 connect_db(app)
 
-
-
-
+db.create_all()
 
 
 
@@ -92,6 +90,7 @@ def signup():
       return render_template('signup.html', form=form)
 
     do_login(user)
+  
     return redirect('/')
 
   else:  
@@ -107,6 +106,7 @@ def login():
 
     if user:
       do_login(user)
+      
       flash(f'Welcome back, {user.username}!', 'success')
       return redirect('/')
     
@@ -136,29 +136,52 @@ def get_parks_by_topic(topic_id):
   return render_template('/parks/show.html', parks=park_topic_data, topic_id=topic_id)
 
 
-@app.route('/park/<code>', methods=['GET'])
-def get_single_park(code):
+@app.route('/park/<park_code>', methods=['GET'])
+def get_single_park(park_code):
   """Get a national park by park code."""
   park = requests.get(f'{API_BASE_URL}/parks', 
                               headers=HEADERS,
-                              params={'parkCode': code, 'limit': PARK_LIMIT})
+                              params={'parkCode': park_code, 'limit': PARK_LIMIT})
   park_data = park.json()
   
   return render_template('/parks/park.html', park=park_data)
 
 ##########
 # User routes
-@app.route('/users/<int:user_id>/favorite', methods=['GET'])
-def show_favorite(user_id):
-  """Show favorite parks for a particular user."""
+@app.route('/users/<int:user_id>/bookmarked', methods=['GET'])
+def show_bookmarked(user_id):
+  """Show bookmarked parks for a particular user."""
   if not g.user:
     flash("Access unauthorized.", "danger")
     return redirect('/')
   
   user = User.query.get_or_404(user_id)
-  return render_template('users/favorite.html', user=user)
+  ## route incomplete
 
+  return render_template('users/bookmarked.html', user=user)
 
+# @app.route('/users/bookmarked/<park_code>', methods=['POST'])
+# def toggle_bookmarked(park_code):
+#   """Toggle bookmarked park for the logged in user."""
+
+#   if not g.user:
+#     flash("Access unauthorized.", "danger")
+#     return redirect("/")
+  
+#   favorite_park = BookmarkedPark.get_or_404(park_code)
+
+#   curr_favorite = g.user.favorite
+#   if favorite_park in curr_favorite:
+#     g.user.favorite = [fav for fav in curr_favorite if fav != favorite_park]
+#   else:
+#     g.user.favorite.append(favorite_park)
+  
+#   db.session.commit()
+
+#   return redirect('/')
+  
+
+  
 
 
 ##########
@@ -171,13 +194,23 @@ def list_topics():
                             params={'limit': PARK_LIMIT})
   return jsonify(all_topics.json())
 
-@app.route('/api/park/<code>', methods=['GET'])
-def get_park(code):
+@app.route('/api/park/<parkCode>', methods=['GET'])
+def get_park(parkCode):
   """Return JSON with info for specific park."""
   one_park = requests.get(f'{API_BASE_URL}/parks', 
                             headers=HEADERS,
-                            params={'parkCode': code, 'limit': PARK_LIMIT})
+                            params={'parkCode': parkCode, 'limit': PARK_LIMIT})
   return jsonify(one_park.json())
+
+@app.route('/api/bookmark/<parkCode>', methods=['POST'])
+def add_bookmark(parkCode):
+  
+  bookmark_park = BookmarkedPark(park_code=parkCode, user_id=(session[CURR_USER_KEY]))
+  
+  db.session.add(bookmark_park)
+  db.session.commit()
+  return jsonify(bookmark_park.json(), 201)
+
 
 
 ##########
