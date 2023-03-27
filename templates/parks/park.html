@@ -2,17 +2,23 @@
 
 {% block content %}
 <h1>{{park['data'][0]['fullName']}}</h1> 
-<form>
-  <button class="btn btn-outline-primary btn-sm"><i class="far fa-bookmark"></i></button> 
+<div id="park-actions">
+  <button class="btn btn-outline-primary btn-sm" id="{{park['data'][0]['parkCode']}}"><i class="far fa-bookmark"></i></button> 
   <button class="btn btn-outline-success btn-sm">Collect</button>
-  <input type='button' value='Back' class="btn btn-outline-secondary btn-sm" onclick="history.go(-1)">
-</form>
+</div>
+ 
+  
+
 
 
 
 <div class="row">
   <div class="col">
     <img src="{{park['data'][0]['images'][0]['url']}}" class="park-img">
+    <form>
+      <input type='button' value='Back' class="btn btn-outline-secondary btn-sm" onclick="history.go(-1)">
+    </form>
+    
   </div>
   <div class="col">
     <b>Description:</b>
@@ -24,7 +30,7 @@
     <p><i class="fas fa-map-pin"></i> {{park['data'][0]['states']}}</p>
       
    
-    <i class="fas fa-info-circle"></i><a href="{{park['data'][0]['url']}}"> Visit nps.gov</a>
+    <i class="fas fa-info-circle"></i><a href="{{park['data'][0]['url']}}" target="a_blank"> Visit nps.gov</a>
   </div>
 </div>
 
