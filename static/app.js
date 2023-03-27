@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', function(){
+
 ////// Home.html 
 // AJAX call to server API to list all park topics
 async function listTopics(){
@@ -19,14 +21,28 @@ function makeTopicHTML(topic){
   `
 }
 
-
-////// Show.html 
-async function listParksByTopic(topic){
-  const response = await axios.get(`/api/topic/${topic.id}`);
-  console.log(response)
-  const topics = response.data.data;
-  // for (let topic of topics){
-  //   let eachTopic = makeTopicHTML(topic)
-  //   $('#parks-list').append(eachTopic) 
-  // }
+////// Park actions: bookmark (used in park.html)
+async function addParkBookmark(e){
+  e.preventDefault()
+  const tgt = $(e.target);
+  console.log(tgt)
+  const closestBtn = tgt.closest('button');
+  console.log(closestBtn)
+  const parkCode = closestBtn.attr('id');
+  
+  if(tgt.hasClass('far')){
+    await axios.post(`/api/bookmark/${parkCode}`)
+    tgt.closest('i').toggleClass('fas far');
+  } 
 }
+
+$('#park-actions').on('click', addParkBookmark);
+
+
+
+////// Park.html 
+ 
+
+
+})
+
