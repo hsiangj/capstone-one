@@ -21,9 +21,9 @@ class User(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
 
-    bookmarked = db.relationship('BookmarkedPark', backref='user')
+    bookmarked = db.relationship('BookmarkedPark', backref='user', cascade='all, delete-orphan')
 
-    collected = db.relationship('CollectedPark', backref='user')
+    collected = db.relationship('CollectedPark', backref='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<User {self.id}: {self.username}>'
@@ -53,9 +53,7 @@ class BookmarkedPark(db.Model):
 
     __tablename__ = 'bookmarked_parks'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    park_code = db.Column(db.Text, nullable=False)
-    park_name = db.Column(db.Text, nullable=False)
+    park_code = db.Column(db.Text, primary_key=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 class CollectedPark(db.Model):
