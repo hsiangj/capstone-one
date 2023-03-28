@@ -1,57 +1,62 @@
 document.addEventListener('DOMContentLoaded', function(){
 
-////// Home.html 
-// AJAX call to server API to list all park topics
-async function listTopics(){
-  const response = await axios.get('/api/topics');
-  
-  const topics = response.data.data;
-  for (let topic of topics){
-    let eachTopic = makeTopicHTML(topic)
-    $('#topics-list').append(eachTopic) 
+  ////// Home.html 
+  // AJAX call to server API to list all park topics
+  async function listTopics(){
+    const response = await axios.get('/api/topics');
+    
+    const topics = response.data.data;
+    for (let topic of topics){
+      let eachTopic = makeTopicHTML(topic)
+      $('#topics-list').append(eachTopic) 
+    }
   }
-}
 
-listTopics()
+  listTopics()
 
-// HTML for topic display
-function makeTopicHTML(topic){
-  return `
-  <a href="/parks/topic/${topic.id}" class="badge badge-pill badge-light" style="font-size:1.3em">${topic.name}</a>
-  `
-}
+  // HTML for topic display
+  function makeTopicHTML(topic){
+    return `
+    <a href="/parks/topic/${topic.id}" class="badge badge-pill badge-light" style="font-size:1.3em">${topic.name}</a>
+    `
+  }
 
-// Add park to bookmark section (used in park.html)
-async function addParkBookmark(e){
-  e.preventDefault()
-  const tgt = $(e.target);
-  console.log(tgt)
-  const closestBtn = tgt.closest('button');
-  console.log(closestBtn)
-  const parkCode = closestBtn.attr('id');
-  const parkName = $('#park-actions').prev('h1').text()
+  // Toggle bookmark icon to add/remove park from bookmark section (used in park.html)
+  async function toggleParkBookmark(e){
+    e.preventDefault()
+    const tgt = $(e.target);
+    console.log(tgt)
+    const closestSpan = tgt.closest('span');
+  
+    const closestI = closestSpan.children('i');
+    console.log(closestI)
+    const parkCode = closestSpan.attr('id');
+    const parkName = $('#park-actions').prev('h1').text()
 
-  if(tgt.hasClass('far')){
-    await axios.post(`/api/bookmark/${parkCode}`, {parkName})
-    tgt.closest('i').toggleClass('fas far');
-  } 
-}
+    if(closestI.hasClass('far')){
+      await axios.post(`/api/bookmark/${parkCode}`, {parkName});
+      closestI.toggleClass('fas far');
+    } else {
+      await axios.delete(`/api/bookmark/${parkCode}`);
+      closestI.toggleClass('far fas');
+    }
+    }
 
-$('#park-actions').on('click', addParkBookmark);
+  $('#park-actions').on('click', toggleParkBookmark);
 
 
 
-// Delete park from bookmark section
-async function deleteParkBookmark(e){
-  e.preventDefault()
-  const tgt = $(e.target);
-  const closestTr = tgt.closest('tr');
-  const parkCode = closestTr.attr('id')
-  await axios.delete(`/api/bookmark/${parkCode}`)
-  closestTr.remove()
-}
-$('#delete-bookmarked-btn').on('click', deleteParkBookmark)
-
+  // Delete park from bookmark section
+  async function deleteParkFromBookmarked(e){
+    e.preventDefault()
+    const tgt = $(e.target);
+    console.log(tgt)
+    const closestTr = tgt.closest('tr');
+    const parkCode = closestTr.attr('id')
+    await axios.delete(`/api/bookmark/${parkCode}`)
+    closestTr.remove()
+  }
+  $('#delete-bookmarked-btn').on('click', deleteParkFromBookmarked)
 
 })
 
