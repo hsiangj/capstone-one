@@ -57,15 +57,14 @@ class BookmarkedPark(db.Model):
     park_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
+
 class CollectedPark(db.Model):
     """Model for collected parks"""
 
     __tablename__ = 'collected_parks'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     park_code = db.Column(db.Text, nullable=False)
     park_name = db.Column(db.Text, nullable=False)
-    state_code = db.Column(db.String(2), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 
