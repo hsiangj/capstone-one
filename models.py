@@ -63,7 +63,7 @@ class CollectedPark(db.Model):
 
     __tablename__ = 'collected_parks'
 
-    park_code = db.Column(db.Text, nullable=False)
+    park_code = db.Column(db.Text, primary_key=True, nullable=False)
     park_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
