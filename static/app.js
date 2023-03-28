@@ -29,9 +29,10 @@ async function addParkBookmark(e){
   const closestBtn = tgt.closest('button');
   console.log(closestBtn)
   const parkCode = closestBtn.attr('id');
-  
+  const parkName = $('#park-actions').prev('h1').text()
+
   if(tgt.hasClass('far')){
-    await axios.post(`/api/bookmark/${parkCode}`)
+    await axios.post(`/api/bookmark/${parkCode}`, {parkName})
     tgt.closest('i').toggleClass('fas far');
   } 
 }

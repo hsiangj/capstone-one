@@ -156,8 +156,7 @@ def show_bookmarked(user_id):
     return redirect('/')
   
   user = User.query.get_or_404(user_id)
-  ## route incomplete
-
+    
   return render_template('users/bookmarked.html', user=user)
 
 # @app.route('/users/bookmarked/<park_code>', methods=['POST'])
@@ -204,11 +203,12 @@ def get_park(parkCode):
 
 @app.route('/api/bookmark/<parkCode>', methods=['POST'])
 def add_bookmark(parkCode):
-  
-  bookmark_park = BookmarkedPark(park_code=parkCode, user_id=(session[CURR_USER_KEY]))
+    
+  bookmark_park = BookmarkedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
   
   db.session.add(bookmark_park)
   db.session.commit()
+  
   return jsonify(bookmark_park.json(), 201)
 
 
