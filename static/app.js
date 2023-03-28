@@ -21,7 +21,7 @@ function makeTopicHTML(topic){
   `
 }
 
-////// Park actions: bookmark (used in park.html)
+// Add park to bookmark section (used in park.html)
 async function addParkBookmark(e){
   e.preventDefault()
   const tgt = $(e.target);
@@ -41,8 +41,16 @@ $('#park-actions').on('click', addParkBookmark);
 
 
 
-////// Park.html 
- 
+// Delete park from bookmark section
+async function deleteParkBookmark(e){
+  e.preventDefault()
+  const tgt = $(e.target);
+  const closestTr = tgt.closest('tr');
+  const parkCode = closestTr.attr('id')
+  await axios.delete(`/api/bookmark/${parkCode}`)
+  closestTr.remove()
+}
+$('#delete-bookmarked-btn').on('click', deleteParkBookmark)
 
 
 })
