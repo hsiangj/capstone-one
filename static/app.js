@@ -1,6 +1,53 @@
 document.addEventListener('DOMContentLoaded', function(){
 
   ////// Home.html 
+  // Search bar autocomplete
+  const input = document.querySelector('#q');
+  const suggestions = document.querySelector('#suggestions ul');
+
+  const parks = ['yosemite', 'yellowstone' ,'lassen', 'joshua', 'pinnacles']
+
+  function search(str, arr) {
+    const results = [];
+    const lowerStr = str.toLowerCase()
+    if (str) {
+      for (let park of parks) {
+        if (park.toLowerCase().includes(lowerStr)) {
+          let idx = arr.indexOf(park);
+          results.push(arr[idx]);
+        }
+      }
+      return results;
+    }
+  }
+
+  function searchHandler(e) {
+    suggestions.innerHTML = '';
+    if (e.target.value !== '') {
+      const searchVal = e.target.value; 
+      const results = search(searchVal, parks);
+      showSuggestions(results);
+    }
+  }
+
+  function showSuggestions(results) {
+    for (let park of results) {
+      const newSuggestion = document.createElement('li');
+      newSuggestion.innerText = park;
+      suggestions.append(newSuggestion);
+    }
+  }
+
+  function useSuggestion(e) {
+    const selectedPark = e.target.innerText;
+    input.value = selectedPark;
+    suggestions.innerHTML = '';
+  }
+  
+  input.addEventListener('keyup', searchHandler);
+  
+  suggestions.addEventListener('click', useSuggestion);
+
   // AJAX call to server API to list all park topics
   async function listTopics(){
     const response = await axios.get('/api/topics');
@@ -52,8 +99,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const closestBtn = tgt.closest('button');
     const parkCode = closestBtn.attr('id');
     const parkName = $('#park-actions').prev('h1').text()
-    console.log(closestBtn.text())
-    console.log(closestBtn.text() == 'Collect')
+    
     if(closestBtn.text() == 'Collect'){
       await axios.post(`/api/collect/${parkCode}`, {parkName});
       closestBtn.text('Collected!');
@@ -71,13 +117,15 @@ document.addEventListener('DOMContentLoaded', function(){
   async function deleteParkFromBookmarked(e){
     e.preventDefault()
     const tgt = $(e.target);
-    console.log(tgt)
     const closestTr = tgt.closest('tr');
-    const parkCode = closestTr.attr('id')
-    await axios.delete(`/api/bookmark/${parkCode}`)
-    closestTr.remove()
+    const parkCode = closestTr.attr('id');
+    await axios.delete(`/api/bookmark/${parkCode}`);
+    closestTr.remove();
   }
-  $('#delete-bookmarked-btn').on('click', deleteParkFromBookmarked)
+
+  $('#delete-bookmarked-btn').on('click', deleteParkFromBookmarked);
+
+  
 
 })
 
