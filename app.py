@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 import requests
 
 from models import db, connect_db, User, BookmarkedPark, CollectedPark
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, EditForm
 from secret import key
 
 CURR_USER_KEY = 'curr_user'
@@ -136,7 +136,7 @@ def get_parks_by_topic(topic_id):
   return render_template('/parks/show.html', parks=park_topic_data, topic_id=topic_id)
 
 
-@app.route('/park/<park_code>', methods=['GET'])
+@app.route('/park/<park_code>')
 def get_single_park(park_code):
   """Get a national park by park code."""
   park = requests.get(f'{API_BASE_URL}/parks', 
@@ -148,7 +148,44 @@ def get_single_park(park_code):
 
 ##########
 # User routes
-@app.route('/users/<int:user_id>/bookmarked', methods=['GET'])
+@app.route('/users/profile', methods = ['GET', 'POST'])
+def edit_user():
+  """Update profile for current user."""
+  if not g.user:
+    flash("Access unauthorized.", "danger")
+
+  user = g.user
+  form = EditForm(obj=user)
+  if form.validate_on_submit():
+    if User.authenticate(user.username, form.password.data):
+      user.username = form.username.data
+      user.email = form.email.data
+      user.first_name = form.first_name.data
+      user.last_name = form.last_name.data
+
+      db.session.add(user)
+      db.session.commit()
+      return redirect('/')
+    
+    flash('Wrong password, please try again.', 'danger')
+
+  return render_template('users/profile.html', form=form)
+
+@app.route('/users/delete', methods=['POST'])
+def delete_user():
+  """Delete user."""
+  if not g.user:
+    flash("Access unauthorized.", "danger")
+    return redirect("/")
+
+  do_logout()
+
+  db.session.delete(g.user)
+  db.session.commit()
+
+  return redirect('/signup')
+
+@app.route('/users/<int:user_id>/bookmarked')
 def show_bookmarked(user_id):
   """Show bookmarked parks for a particular user."""
   if user_id != g.user.id:
@@ -159,7 +196,7 @@ def show_bookmarked(user_id):
     
   return render_template('users/bookmarked.html', user=user)
 
-@app.route('/users/<int:user_id>/collected', methods=['GET'])
+@app.route('/users/<int:user_id>/collected')
 def show_collected(user_id):
   """Show collected parks for a particular user."""
   if user_id != g.user.id:
@@ -170,33 +207,10 @@ def show_collected(user_id):
 
   return render_template('users/collected.html', user=user)
 
-# @app.route('/users/bookmarked/<park_code>', methods=['POST'])
-# def toggle_bookmarked(park_code):
-#   """Toggle bookmarked park for the logged in user."""
-
-#   if not g.user:
-#     flash("Access unauthorized.", "danger")
-#     return redirect("/")
-  
-#   favorite_park = BookmarkedPark.get_or_404(park_code)
-
-#   curr_favorite = g.user.favorite
-#   if favorite_park in curr_favorite:
-#     g.user.favorite = [fav for fav in curr_favorite if fav != favorite_park]
-#   else:
-#     g.user.favorite.append(favorite_park)
-  
-#   db.session.commit()
-
-#   return redirect('/')
-  
-
-  
-
 
 ##########
 # API routes
-@app.route('/api/topics', methods=['GET'])
+@app.route('/api/topics')
 def list_topics():
   """Return JSON with all park topics."""
   all_topics = requests.get(f'{API_BASE_URL}/topics', 
@@ -204,7 +218,7 @@ def list_topics():
                             params={'limit': PARK_LIMIT})
   return jsonify(all_topics.json())
 
-@app.route('/api/park/<parkCode>', methods=['GET'])
+@app.route('/api/park/<parkCode>')
 def get_park(parkCode):
   """Return JSON with info for specific park."""
   one_park = requests.get(f'{API_BASE_URL}/parks', 
