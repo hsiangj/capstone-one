@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+  <div class="col-md-4">
+    <h2 class="join-message">Edit Your Profile</h2>
+    <form method="POST" id="user_form">
+      {{ form.hidden_tag() }}
+
+      {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
+        {% for error in field.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+       {{field.label}}
+       {{ field(placeholder=field.label.text, class="form-control") }}
+      {% endfor %}
+
+      <p>To confirm changes, enter your password:</p>
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          <span class="text-danger">
+          {{ error }}
+        </span>
+        {% endfor %}
+      {% endif %}
+      {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+
+      <div class="edit-btn-area">
+        <button class="btn btn-primary">Save</button>
+        <a href="/" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+      
+    </form>
+  </div>
+</div>
+
+<hr>
+<button type="button" class="btn btn-outline-warning" data-target="#deleteModal" data-toggle="modal">Delete Account</button>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Delete Account</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+   </div>
+   <div class="modal-body">
+    <p>Are you sure you want to delete?</p>
+  </div>
+  <form>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-warning" formaction="/users/delete" formmethod="POST">Yes</button>
+  </div>
+  </form>
+  </div>
+ </div>
+</div>
+
+{% endblock %}
