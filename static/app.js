@@ -45,6 +45,27 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#park-actions').on('click', toggleParkBookmark);
 
 
+  // Toggle 'collect' button to add/remove park from collected section (used in park.html)
+  async function toggleParkCollect(e){
+    e.preventDefault()
+    const tgt = $(e.target);
+    const closestBtn = tgt.closest('button');
+    const parkCode = closestBtn.attr('id');
+    const parkName = $('#park-actions').prev('h1').text()
+    console.log(closestBtn.text())
+    console.log(closestBtn.text() == 'Collect')
+    if(closestBtn.text() == 'Collect'){
+      await axios.post(`/api/collect/${parkCode}`, {parkName});
+      closestBtn.text('Collected!');
+    } else {
+      await axios.delete(`/api/collect/${parkCode}`);
+      closestBtn.text('Collect');
+    }
+    }
+
+  $('#park-actions').on('click', toggleParkCollect);
+
+
 
   // Delete park from bookmark section
   async function deleteParkFromBookmarked(e){
