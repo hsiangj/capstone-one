@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Collection</h1>
+<div>
+Hello adventurer! Total parks collected: {{user.collected | length}}
+</div>
+
+<div class="collection">
+  {% for u in user.collected %}
+  <div id="collection-{{u.park_code}}" class="collection-card">
+    <span>{{u.park_name}}</span>
+  </div>
+      
+    
+  {% endfor %}
+
+
+</div>
+
+    
+    
+
+{% endblock %}

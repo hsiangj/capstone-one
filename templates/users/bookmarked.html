@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Bookmarked</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Park Name</th>
+      <th scope="col">Explore</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for u in user.bookmarked %}
+      
+    <tr id="{{u.park_code}}">
+      <td>{{u.park_name}}</td>
+
+      <form>
+        <td>
+          <button class="btn btn-sm btn-outline-info" formaction="/park/{{u.park_code}}" formmethod="GET">See info</button>
+        </td>
+      </form>
+  
+      <td><button class="btn btn-sm btn-outline-danger" id="delete-bookmarked-btn">x</button></td>
+    </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>
+
+
+{% endblock %}
+
+
+
