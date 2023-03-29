@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 
-from models import db, connect_db, User, CollectedPark, BookmarkedPark
+from models import db, connect_db, User, BookmarkedPark, CollectedPark
 from forms import RegisterForm, LoginForm
 from secret import key
 
@@ -57,7 +57,7 @@ def do_logout():
 @app.route('/')
 def homepage():
   """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
-  if g.user:
+  if g.user.id:
     return render_template('home.html')
   else:
     return render_template ('home-anon.html')
@@ -151,13 +151,24 @@ def get_single_park(park_code):
 @app.route('/users/<int:user_id>/bookmarked', methods=['GET'])
 def show_bookmarked(user_id):
   """Show bookmarked parks for a particular user."""
-  if not g.user:
+  if user_id != g.user.id:
     flash("Access unauthorized.", "danger")
     return redirect('/')
   
   user = User.query.get_or_404(user_id)
     
   return render_template('users/bookmarked.html', user=user)
+
+@app.route('/users/<int:user_id>/collected', methods=['GET'])
+def show_collected(user_id):
+  """Show collected parks for a particular user."""
+  if user_id != g.user.id:
+    flash("Access unauthorized.", "danger")
+    return redirect('/')
+  
+  user = User.query.get_or_404(user_id)
+
+  return render_template('users/collected.html', user=user)
 
 # @app.route('/users/bookmarked/<park_code>', methods=['POST'])
 # def toggle_bookmarked(park_code):
@@ -201,20 +212,51 @@ def get_park(parkCode):
                             params={'parkCode': parkCode, 'limit': PARK_LIMIT})
   return jsonify(one_park.json())
 
-@app.route('/api/bookmark/<parkCode>', methods=['POST'])
+@app.route('/api/bookmark/<parkCode>', methods=['POST']) 
 def add_bookmark(parkCode):
-    
+  """Handle adding park to bookmarked table."""
   bookmark_park = BookmarkedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
   
   db.session.add(bookmark_park)
   db.session.commit()
+ 
+  return jsonify(message= 'Success')
+
+@app.route('/api/bookmark/<parkCode>', methods=['DELETE'])
+def delete_bookmark(parkCode):
+  """Delete a particular bookmarked park and respond with delete message."""
+  park = BookmarkedPark.query.get_or_404(parkCode)
+
+  db.session.delete(park)
+  db.session.commit()
   
-  return jsonify(bookmark_park.json(), 201)
+  return jsonify(message= 'Deleted')
+
+@app.route('/api/collect/<parkCode>', methods=['POST'])
+def add_collect(parkCode):
+  """Handle adding park to collected table."""
+  collected_park = CollectedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
+
+  db.session.add(collected_park)
+  db.session.commit()
+
+  return jsonify(message= 'Success')
+
+@app.route('/api/collect/<parkCode>', methods=['DELETE'])
+def delete_collect(parkCode):
+  """Delete a particular collected park and respond with delete message."""
+  park = CollectedPark.query.get_or_404(parkCode)
+
+  db.session.delete(park)
+  db.session.commit()
+  
+  return jsonify(message= 'Deleted')
 
 
 
 ##########
 # Helper functions to be moved
+
 
 
 
