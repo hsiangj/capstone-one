@@ -135,10 +135,23 @@ def get_parks_by_topic(topic_id):
 
   return render_template('/parks/show.html', parks=park_topic_data, topic_id=topic_id)
 
+@app.route('/park', methods=['GET','POST'])
+def query_park_code():
+  """Retrieve form data and query for park code using park name."""
+  park_name = request.form['q']
+  try:
+    park = Park.query.filter_by(park_name=park_name).first()
+    park_code = park.park_code
+    return redirect(f'/park/{park_code}')
+  except AttributeError:
+    flash('Please select a valid park.', 'danger')
+    return redirect('/') 
 
 @app.route('/park/<park_code>')
 def get_single_park(park_code):
   """Get a national park by park code."""
+  
+
   park = requests.get(f'{API_BASE_URL}/parks', 
                               headers=HEADERS,
                               params={'parkCode': park_code, 'limit': PARK_LIMIT})
