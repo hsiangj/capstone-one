@@ -1,11 +1,23 @@
 document.addEventListener('DOMContentLoaded', function(){
 
+  // AJAX call to server API to save all parks to DB
+  async function getParks(){
+    await axios.get('api/parks');
+  }
+  getParks()
+
+  // AJAX call to server API for park names
+  let parks = [];
+  async function getParkNames(){
+    let response = await axios.get('api/parks/names');
+    parks = response.data.names;
+  }
+  getParkNames()
+
   ////// Home.html 
   // Search bar autocomplete
   const input = document.querySelector('#q');
   const suggestions = document.querySelector('#suggestions ul');
-
-  const parks = ['yosemite', 'yellowstone' ,'lassen', 'joshua', 'pinnacles']
 
   function search(str, arr) {
     const results = [];
@@ -48,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function(){
   
   suggestions.addEventListener('click', useSuggestion);
 
+  
   // AJAX call to server API to list all park topics
   async function listTopics(){
     const response = await axios.get('/api/topics');
