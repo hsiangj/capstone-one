@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
 
-from models import db, connect_db, User, BookmarkedPark, CollectedPark
+from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
 from secret import key
 
@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.app_context().push()
 app.config["SQLALCHEMY_DATABASE_URI"] = (os.environ.get('DATABASE_URL', 'postgresql:///park_collector'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = True
+app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', "chamberofsecrets")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
@@ -218,6 +218,35 @@ def list_topics():
                             params={'limit': PARK_LIMIT})
   return jsonify(all_topics.json())
 
+@app.route('/api/parks')
+def get_all_parks():
+  """Add basic park info for all parks to database."""
+  parks = requests.get(f'{API_BASE_URL}/parks', 
+                            headers=HEADERS,
+                            params={'limit': 5})
+  parks_data = parks.json()
+  parks = []
+  
+  for park in parks_data['data']:
+    park_code = park['parkCode']
+    park_name = park['fullName']
+    park_state = park['addresses'][0]['stateCode']
+    new_park = Park(park_code=park_code, park_name=park_name, park_state=park_state)
+    parks.append(new_park)
+
+  db.session.add_all(parks)
+  db.session.commit()
+
+  return jsonify(message= 'Success')
+
+@app.route('/api/parks/names')
+def get_park_names():
+  parks = Park.query.all()
+  names = []
+  for park in parks:
+    names.append(park.park_name)
+  return jsonify({'names': names})
+
 @app.route('/api/park/<parkCode>')
 def get_park(parkCode):
   """Return JSON with info for specific park."""
@@ -265,6 +294,7 @@ def delete_collect(parkCode):
   db.session.commit()
   
   return jsonify(message= 'Deleted')
+
 
 
 
