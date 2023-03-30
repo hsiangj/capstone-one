@@ -5,7 +5,7 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 def connect_db(app):
-    """Connect model to Flask app. Function called in app.py"""
+    """Connect model to Flask app. Function called in app.py."""
     db.app = app
     db.init_app(app)
 
@@ -30,7 +30,7 @@ class User(db.Model):
 
     @classmethod
     def signup(cls, username, password, email, first, last):
-        """Register user w/ hashed password & return user"""
+        """Register user w/ hashed password & return user."""
 
         hashed = bcrypt.generate_password_hash(password)
         hashed_utf8 = hashed.decode('utf8')
@@ -39,8 +39,8 @@ class User(db.Model):
     
     @classmethod
     def authenticate(cls, username, password):
-        """Validate that user exists and password is correct
-        Return user if valid; else return False"""
+        """Validate that user exists and password is correct.
+        Return user if valid; else return False."""
 
         user = User.query.filter_by(username=username).first()
         if user and bcrypt.check_password_hash(user.password, password):
@@ -49,7 +49,7 @@ class User(db.Model):
             return False
 
 class BookmarkedPark(db.Model):
-    """Model for bookmarked parks"""
+    """Model for bookmarked parks."""
 
     __tablename__ = 'bookmarked_parks'
 
@@ -59,12 +59,21 @@ class BookmarkedPark(db.Model):
 
 
 class CollectedPark(db.Model):
-    """Model for collected parks"""
+    """Model for collected parks."""
 
     __tablename__ = 'collected_parks'
 
     park_code = db.Column(db.Text, primary_key=True, nullable=False)
     park_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+class Park(db.Model):
+    """Model for basic park info."""
+
+    __tablename__ = 'parks'
+
+    park_code = db.Column(db.Text, primary_key=True, nullable=False)
+    park_name = db.Column(db.Text, nullable=False)
+    park_state = db.Column(db.String(2))
 
 
