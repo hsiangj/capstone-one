@@ -3,19 +3,21 @@
 {% block content %}
 <h1>Where to next?</h1>
 
-<div id="searchBar">
-  <form class="form-inline" action="#">
-    <input name="q" class="form-control mr-2" placeholder="Search by park name">
+<form autocomplete="off" class="form-inline" action="#">
+  <div class="search-container form-group">
+    <input name="q" id="q" class="form-control mr-2" placeholder="Search by park name">
+    
+    <button class="btn btn-sm {{'btn-primary'}}" formaction="/park" formmethod="POST">
+      <i class="fas fa-arrow-right"></i> 
+    </button>
+    
+  </div>
+  <div id="suggestions">
+    <ul></ul>
+  </div>
+</form>
 
-    <button class="
-            btn 
-            btn-sm 
-            {{'btn-primary'}}"
-          >
-            <i class="fas fa-arrow-right"></i> 
-          </button>
-  </form>
-</div>
+
 <p>or browse by topics below:</p>
 <div id="topics-list"></div>
   
