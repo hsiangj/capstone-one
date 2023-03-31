@@ -11,3 +11,74 @@ body {
   width: 100%;
   max-height: auto;
 }
+
+/*---------------- COLLECTION ----------------*/
+
+.collection {
+  display: flex;
+  flex: wrap;
+}
+
+/* collected card in collection */
+.collection-card {
+  width: 160px;
+  height: 220px;
+  border: 5px solid rgb(204,202,202);
+  border-style: double;
+  margin: 5px;
+  padding: 3px;
+  border-radius: 10px;
+  background-color: black;
+}
+
+.collection-card-header {
+  background-color: black;
+  border-radius: 5px;
+  padding-bottom: 5px;
+}
+
+.collection-card-title {
+  font-size: .8em;
+  font-weight: bold;
+  color: white;
+}
+
+.collection-card-code {
+  font-size: .6em;
+  color: white;
+}
+
+.collection-card-body {
+  height: 70%;
+  overflow: hidden;
+}
+
+.collection-card-body img {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
+
+/*---------------- SEARCH BAR & AUTOCOMPLETE ----------------*/
+.search-container {
+  width: 100%;
+}
+
+#q {
+  width: 90%;
+}
+
+.search-container button {
+  cursor: pointer;
+}
+
+#suggestions ul {
+  list-style-type: none;
+  padding-left: 12px;
+  width: 100%;
+}
+
+#suggestions ul li:hover {
+  background-color: greenyellow;
+  cursor: pointer;
+}
