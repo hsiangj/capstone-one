@@ -59,6 +59,20 @@ body {
   display: block;
 }
 
+.delete {
+  color: white;
+  position: relative;
+  display: inline-block;
+  bottom: 5%;
+  visibility: hidden;
+  opacity: 0; 
+}
+
+.collection-card:hover .delete {
+  visibility: visible;
+  opacity: .7;
+}
+
 /*---------------- SEARCH BAR & AUTOCOMPLETE ----------------*/
 .search-container {
   width: 100%;
