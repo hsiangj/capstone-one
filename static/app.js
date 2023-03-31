@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function(){
     `
   }
 
-  // Toggle bookmark icon to add/remove park from bookmark section (used in park.html)
+  ////// Park.html 
+  // Toggle bookmark icon to add/remove park from bookmark section 
   async function toggleParkBookmark(e){
     e.preventDefault()
     const tgt = $(e.target);
@@ -94,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#park-actions').on('click', toggleParkBookmark);
 
 
-  // Toggle 'collect' button to add/remove park from collected section (used in park.html)
+  // Toggle 'collect' button to add/remove park from collected section 
   async function toggleParkCollect(e){
     e.preventDefault()
     const tgt = $(e.target);
@@ -114,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#park-actions').on('click', toggleParkCollect);
 
 
-
+  ////// Bookmarked.html 
   // Delete park from bookmark section
   async function deleteParkFromBookmarked(e){
     e.preventDefault()
@@ -127,6 +128,38 @@ document.addEventListener('DOMContentLoaded', function(){
 
   $('button#delete-bookmarked-btn').on('click', deleteParkFromBookmarked);
 
+
+  ////// Collected.html
+  // Get collected parks' image URLS via AJAX call to server API
+  async function getCollectedParkImg(){
+    let parkDict = {}
+    
+    const cards = Array.from(document.querySelectorAll('.collection-card'))
+    for (let card of cards){
+      parkCodes.push(card.id);
+      parkDict[card.id] = ""
+    }
+    
+    for (let key in parkDict){
+      response = await axios.get(`/api/park/${key}`)
+      parkDict[key] = response.data.data[0].images[0]['url']
+    }
+
+    for (let card of cards){
+      for (let [k, v] of Object.entries(parkDict)){
+        if (k == card.id){
+          card.children[1].children[0].src = v;
+        }
+      }
+    }
+    
+  }
+  
+  getCollectedParkImg();
+
+  
+
+  //////
   // AJAX call to server API to save all parks to DB
   async function getParks(){
     await axios.get('api/parks');
