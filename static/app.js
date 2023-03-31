@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(){
 
-  ////// Home.html 
+  ////// Home.html //////
   // Search bar autocomplete
   let input = document.getElementById('q');
   let suggestions = document.querySelector('#suggestions ul');
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
     `
   }
 
-  ////// Park.html 
+  ////// Park.html //////
   // Toggle bookmark icon to add/remove park from bookmark section 
   async function toggleParkBookmark(e){
     e.preventDefault()
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function(){
   $('#park-actions').on('click', toggleParkCollect);
 
 
-  ////// Bookmarked.html 
+  ////// Bookmarked.html //////
   // Delete park from bookmark section
   async function deleteParkFromBookmarked(e){
     e.preventDefault()
@@ -129,35 +129,48 @@ document.addEventListener('DOMContentLoaded', function(){
   $('button#delete-bookmarked-btn').on('click', deleteParkFromBookmarked);
 
 
-  ////// Collected.html
+  ////// Collected.html //////
   // Get collected parks' image URLS via AJAX call to server API
   async function getCollectedParkImg(){
-    let parkDict = {}
+    let parkObj = {}
     
     const cards = Array.from(document.querySelectorAll('.collection-card'))
     for (let card of cards){
-      parkCodes.push(card.id);
-      parkDict[card.id] = ""
+      parkObj[card.id] = ""
     }
     
-    for (let key in parkDict){
+    for (let key in parkObj){
       response = await axios.get(`/api/park/${key}`)
-      parkDict[key] = response.data.data[0].images[0]['url']
+      parkObj[key] = response.data.data[0].images[0]['url']
     }
 
+    updateCollectedCardImg(cards, parkObj)
+  
+  }
+  
+  getCollectedParkImg();
+
+
+  function updateCollectedCardImg(cards, obj){
     for (let card of cards){
-      for (let [k, v] of Object.entries(parkDict)){
+      for (let [k, v] of Object.entries(obj)){
         if (k == card.id){
           card.children[1].children[0].src = v;
         }
       }
     }
-    
   }
   
-  getCollectedParkImg();
-
-  
+  //listen for double click to remove card
+  async function deleteCollectedCard(e){
+    e.preventDefault;
+    const tgt = $(e.target);
+    const closestCard = tgt.closest('.collection-card');
+    const parkCode = closestCard.attr('id');
+    await axios.delete(`/api/collect/${parkCode}`);
+    closestCard.remove()
+  }
+  $('div.collection').on('click', deleteCollectedCard);
 
   //////
   // AJAX call to server API to save all parks to DB
@@ -169,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // AJAX call to server API for park names
   let parks = [];
   async function getParkNames(){
-    let response = await axios.get('api/parks/names');
+    let response = await axios.delete(f`api/collect/${park_code}`);
     parks = response.data.names;
   }
   getParkNames()
