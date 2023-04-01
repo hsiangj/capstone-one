@@ -12,7 +12,7 @@ from secret import key
 CURR_USER_KEY = 'curr_user'
 API_BASE_URL = "https://developer.nps.gov/api/v1"
 HEADERS = {"X-Api-Key":key}
-PARK_LIMIT = 450
+PARK_LIMIT = 468
 
 app = Flask(__name__)
 app.app_context().push()
