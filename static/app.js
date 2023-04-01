@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', function(){
   let input = document.getElementById('q');
   let suggestions = document.querySelector('#suggestions ul');
 
+  // AJAX call to server API for park names
+  let parks = [];
+  async function getParkNames(){
+    
+    let response = await axios.get('/api/parks/names');
+    parks = response.data.names;
+    
+  }
+  getParkNames();
+
   function search(str, arr) {
     const results = [];
     const lowerStr = str.toLowerCase()
@@ -75,20 +85,19 @@ document.addEventListener('DOMContentLoaded', function(){
   async function toggleParkBookmark(e){
     e.preventDefault()
     const tgt = $(e.target);
-    console.log(tgt)
-    const closestSpan = tgt.closest('span');
-  
-    const closestI = closestSpan.children('i');
-    console.log(closestI)
-    const parkCode = closestSpan.attr('id');
+    const closestBtn = tgt.closest('button');
+    const parkCode = closestBtn.attr('id');
     const parkName = $('#park-actions').prev('h1').text()
 
-    if(closestI.hasClass('far')){
+    if(closestBtn.text() == 'Bookmark'){
       await axios.post(`/api/bookmark/${parkCode}`, {parkName});
-      closestI.toggleClass('fas far');
+      closestBtn.text('Bookmarked!');
+      closestBtn.addClass('bookmarked');
+      
     } else {
       await axios.delete(`/api/bookmark/${parkCode}`);
-      closestI.toggleClass('far fas');
+      closestBtn.text('Bookmark');
+      closestBtn.removeClass('bookmarked');
     }
     }
 
@@ -131,8 +140,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
   ////// Collected.html //////
   // Get collected parks' image URLS via AJAX call to server API
-  async function getCollectedParkImg(){
+  async function getCollectedParkImgAndLoc(){
     let parkObj = {}
+    // let locArr = []
     
     const cards = Array.from(document.querySelectorAll('.collection-card'))
     for (let card of cards){
@@ -142,13 +152,14 @@ document.addEventListener('DOMContentLoaded', function(){
     for (let key in parkObj){
       response = await axios.get(`/api/park/${key}`)
       parkObj[key] = response.data.data[0].images[0]['url']
+      // locArr.push(response.data.data[0].states)
     }
 
     updateCollectedCardImg(cards, parkObj)
   
   }
   
-  getCollectedParkImg();
+  getCollectedParkImgAndLoc();
 
 
   function updateCollectedCardImg(cards, obj){
@@ -161,6 +172,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }
   
+ 
+
   //listen for double click to remove card
   async function deleteCollectedCard(e){
     e.preventDefault;
@@ -179,13 +192,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   getParks();
 
-  // AJAX call to server API for park names
-  let parks = [];
-  async function getParkNames(){
-    let response = await axios.delete(f`api/collect/${park_code}`);
-    parks = response.data.names;
-  }
-  getParkNames()
+  
 
 })
 
