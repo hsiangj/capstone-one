@@ -9,8 +9,18 @@ Hello adventurer! Total parks collected: {{user.collected | length}}
 
 <div class="collection">
   {% for u in user.collected %}
-  <div id="collection-{{u.park_code}}" class="collection-card">
-    <span>{{u.park_name}}</span>
+  <div id="{{u.park_code}}" class="collection-card">
+    <div class="collection-card-header">
+      <span class="collection-card-title">{{u.park_name}}</span>
+    </div>
+    
+    <div class="collection-card-body">
+      <img src="" alt="NPS photo">
+    </div>
+    <div class="collection-card-footer">
+      <span class="collection-card-loc">{{u.park_code}}</span>
+    </div>
+    <span class="delete">remove from collection</span>
   </div>
       
     
