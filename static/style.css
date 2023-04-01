@@ -43,8 +43,8 @@ body {
   color: white;
 }
 
-.collection-card-code {
-  font-size: .6em;
+.collection-card-loc {
+  font-size: .7em;
   color: white;
 }
 
@@ -73,6 +73,7 @@ body {
   opacity: .7;
 }
 
+
 /*---------------- SEARCH BAR & AUTOCOMPLETE ----------------*/
 .search-container {
   width: 100%;
@@ -95,4 +96,15 @@ body {
 #suggestions ul li:hover {
   background-color: greenyellow;
   cursor: pointer;
+}
+
+/*---------------- 404 ----------------*/
+.error-page {
+  background-image: url('https://img.freepik.com/free-photo/beautiful-shot-high-white-hilltops-mountains-covered-fog_181624-399.jpg?size=626&ext=jpg');
+  background-repeat: no-repeat;
+  height: 400px;
+  width: 100vh;
+  margin: 0 auto;
+  
+
 }
