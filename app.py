@@ -30,6 +30,21 @@ db.create_all()
 
 
 ##########
+# Homepage and error page
+@app.route('/')
+def homepage():
+  """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
+  if g.user.id:
+    return render_template('home.html')
+  else:
+    return render_template ('home-anon.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+  """404 page"""
+  return render_template('404.html')
+
+##########
 # User signup/login/logout
 
 @app.before_request
@@ -52,15 +67,6 @@ def do_logout():
   
   if CURR_USER_KEY in session: 
     del session[CURR_USER_KEY]
-
-
-@app.route('/')
-def homepage():
-  """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
-  if g.user.id:
-    return render_template('home.html')
-  else:
-    return render_template ('home-anon.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -151,7 +157,6 @@ def query_park_code():
 def get_single_park(park_code):
   """Get a national park by park code."""
   
-
   park = requests.get(f'{API_BASE_URL}/parks', 
                               headers=HEADERS,
                               params={'parkCode': park_code, 'limit': PARK_LIMIT})
@@ -236,7 +241,7 @@ def get_all_parks():
   """Add basic park info for all parks to database."""
   parks = requests.get(f'{API_BASE_URL}/parks', 
                             headers=HEADERS,
-                            params={'limit': 5})
+                            params={'limit': PARK_LIMIT})
   parks_data = parks.json()
   parks = []
   
@@ -254,6 +259,7 @@ def get_all_parks():
 
 @app.route('/api/parks/names')
 def get_park_names():
+  """Return JSON of all park names."""
   parks = Park.query.all()
   names = []
   for park in parks:
@@ -270,7 +276,7 @@ def get_park(parkCode):
 
 @app.route('/api/bookmark/<parkCode>', methods=['POST']) 
 def add_bookmark(parkCode):
-  """Handle adding park to bookmarked table."""
+  """Handle adding park to bookmarked table in database."""
   bookmark_park = BookmarkedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
   
   db.session.add(bookmark_park)
@@ -280,7 +286,7 @@ def add_bookmark(parkCode):
 
 @app.route('/api/bookmark/<parkCode>', methods=['DELETE'])
 def delete_bookmark(parkCode):
-  """Delete a particular bookmarked park and respond with delete message."""
+  """Delete a particular bookmarked park from database and respond with delete message."""
   park = BookmarkedPark.query.get_or_404(parkCode)
 
   db.session.delete(park)
@@ -290,7 +296,7 @@ def delete_bookmark(parkCode):
 
 @app.route('/api/collect/<parkCode>', methods=['POST'])
 def add_collect(parkCode):
-  """Handle adding park to collected table."""
+  """Handle adding park to collected table in database."""
   collected_park = CollectedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
 
   db.session.add(collected_park)
@@ -300,7 +306,7 @@ def add_collect(parkCode):
 
 @app.route('/api/collect/<parkCode>', methods=['DELETE'])
 def delete_collect(parkCode):
-  """Delete a particular collected park and respond with delete message."""
+  """Delete a particular collected park in database and respond with delete message."""
   park = CollectedPark.query.get_or_404(parkCode)
 
   db.session.delete(park)
@@ -311,8 +317,6 @@ def delete_collect(parkCode):
 
 
 
-##########
-# Helper functions to be moved
 
 
 
