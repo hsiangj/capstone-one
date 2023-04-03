@@ -223,7 +223,7 @@ def show_collected(user_id):
   
   user = User.query.get_or_404(user_id)
 
-  return render_template('users/collected.html', user=user)
+  return render_template('users/collected.html', user=user, total=PARK_LIMIT)
 
 
 ##########
