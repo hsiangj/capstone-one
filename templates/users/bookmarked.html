@@ -9,8 +9,6 @@
     No parks bookmarked yet. Search for parks to get started! 
 
     {% else %}
-
-      {% for u in user.bookmarked %}
       <thead>
         <tr>
           <th scope="col">Park Name</th>
@@ -19,6 +17,8 @@
         </tr>
       </thead>
       <tbody>
+      {% for u in user.bookmarked %}
+      
         
       <tr id="{{u.park_code}}">
         <td>{{u.park_name}}</td>
