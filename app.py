@@ -268,16 +268,16 @@ def get_park_names():
 
 @app.route('/api/park/<parkCode>')
 def get_park(parkCode):
-  """Return JSON with info for specific park."""
+  """Return JSON with info for specific park from external API."""
   one_park = requests.get(f'{API_BASE_URL}/parks', 
                             headers=HEADERS,
                             params={'parkCode': parkCode, 'limit': PARK_LIMIT})
   return jsonify(one_park.json())
 
-@app.route('/api/bookmark/<parkCode>', methods=['POST']) 
-def add_bookmark(parkCode):
+@app.route('/api/bookmark', methods=['POST']) 
+def add_bookmark():
   """Handle adding park to bookmarked table in database."""
-  bookmark_park = BookmarkedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
+  bookmark_park = BookmarkedPark(park_code=request.json['parkCode'], park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
   
   db.session.add(bookmark_park)
   db.session.commit()
@@ -287,17 +287,18 @@ def add_bookmark(parkCode):
 @app.route('/api/bookmark/<parkCode>', methods=['DELETE'])
 def delete_bookmark(parkCode):
   """Delete a particular bookmarked park from database and respond with delete message."""
-  park = BookmarkedPark.query.get_or_404(parkCode)
+  park = BookmarkedPark.query.filter(BookmarkedPark.park_code==parkCode, BookmarkedPark.user_id==(session[CURR_USER_KEY])).first()
 
   db.session.delete(park)
   db.session.commit()
   
   return jsonify(message= 'Deleted')
 
-@app.route('/api/collect/<parkCode>', methods=['POST'])
-def add_collect(parkCode):
+
+@app.route('/api/collect', methods=['POST'])
+def add_collect():
   """Handle adding park to collected table in database."""
-  collected_park = CollectedPark(park_code=parkCode, park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
+  collected_park = CollectedPark(park_code=request.json['parkCode'], park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
 
   db.session.add(collected_park)
   db.session.commit()
@@ -307,12 +308,15 @@ def add_collect(parkCode):
 @app.route('/api/collect/<parkCode>', methods=['DELETE'])
 def delete_collect(parkCode):
   """Delete a particular collected park in database and respond with delete message."""
-  park = CollectedPark.query.get_or_404(parkCode)
+  park = CollectedPark.query.filter(CollectedPark.park_code==parkCode, CollectedPark.user_id==(session[CURR_USER_KEY])).first()
 
   db.session.delete(park)
   db.session.commit()
   
   return jsonify(message= 'Deleted')
+
+
+
 
 
 
