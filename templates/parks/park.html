@@ -3,21 +3,22 @@
 {% block content %}
 <h1>{{park['data'][0]['fullName']}}</h1> 
 <div id="park-actions">
-  <button class="btn btn-outline-primary btn-sm" id="{{park['data'][0]['parkCode']}}"><i class="far fa-bookmark"></i></button> 
-  <button class="btn btn-outline-success btn-sm">Collect</button>
+  <form>
+  <button class="btn btn-outline-primary btn-sm bookmark-btn" id="{{park_code}}">{% if park_code in g.user.bookmarked|map(attribute="park_code") %}Bookmarked!{% else %}Bookmark{% endif %}</button> 
+  
+  <button class="btn btn-outline-success btn-sm collect-btn" id="{{park_code}}">{% if park_code in g.user.collected|map(attribute="park_code") %}Collected!{% else %}Collect{% endif %}</button>
+
+  <input type='button' value='Back' class="btn btn-outline-secondary btn-sm" onclick="history.go(-1)">
+  </form>
 </div>
  
   
 
 
-
-
 <div class="row">
   <div class="col">
     <img src="{{park['data'][0]['images'][0]['url']}}" class="park-img">
-    <form>
-      <input type='button' value='Back' class="btn btn-outline-secondary btn-sm" onclick="history.go(-1)">
-    </form>
+   
     
   </div>
   <div class="col">
