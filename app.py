@@ -162,7 +162,7 @@ def get_single_park(park_code):
                               params={'parkCode': park_code, 'limit': PARK_LIMIT})
   park_data = park.json()
   
-  return render_template('/parks/park.html', park=park_data)
+  return render_template('/parks/park.html', park=park_data, park_code=park_code)
 
 ##########
 # User routes
