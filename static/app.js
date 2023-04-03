@@ -85,43 +85,43 @@ document.addEventListener('DOMContentLoaded', function(){
   async function toggleParkBookmark(e){
     e.preventDefault()
     const tgt = $(e.target);
-    const closestBtn = tgt.closest('button');
-    const parkCode = closestBtn.attr('id');
+    const bookmarkBtn = tgt.closest('button');
+    const parkCode = bookmarkBtn.attr('id');
     const parkName = $('#park-actions').prev('h1').text()
-
-    if(closestBtn.text() == 'Bookmark'){
-      await axios.post(`/api/bookmark/${parkCode}`, {parkName});
-      closestBtn.text('Bookmarked!');
-      closestBtn.addClass('bookmarked');
+    
+    if(bookmarkBtn.text() == 'Bookmark'){
+      await axios.post('/api/bookmark', {parkCode, parkName});
+      bookmarkBtn.text('Bookmarked!');
+      bookmarkBtn.addClass('bookmarked');
       
     } else {
       await axios.delete(`/api/bookmark/${parkCode}`);
-      closestBtn.text('Bookmark');
-      closestBtn.removeClass('bookmarked');
+      bookmarkBtn.text('Bookmark');
+      bookmarkBtn.removeClass('bookmarked');
     }
     }
 
-  $('#park-actions').on('click', toggleParkBookmark);
+  $('.bookmark-btn').on('click', toggleParkBookmark);
 
-
+   
   // Toggle 'collect' button to add/remove park from collected section 
   async function toggleParkCollect(e){
     e.preventDefault()
     const tgt = $(e.target);
-    const closestBtn = tgt.closest('button');
-    const parkCode = closestBtn.attr('id');
+    const collectBtn = tgt.closest('button');
+    const parkCode = collectBtn.attr('id');
     const parkName = $('#park-actions').prev('h1').text()
     
-    if(closestBtn.text() == 'Collect'){
-      await axios.post(`/api/collect/${parkCode}`, {parkName});
-      closestBtn.text('Collected!');
+    if(collectBtn.text() == 'Collect'){
+      await axios.post('/api/collect', {parkCode, parkName});
+      collectBtn.text('Collected!');
     } else {
       await axios.delete(`/api/collect/${parkCode}`);
-      closestBtn.text('Collect');
+      collectBtn.text('Collect');
     }
     }
 
-  $('#park-actions').on('click', toggleParkCollect);
+  $('.collect-btn').on('click', toggleParkCollect);
 
 
   ////// Bookmarked.html //////
