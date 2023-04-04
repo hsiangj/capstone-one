@@ -13,6 +13,7 @@
         <tr>
           <th scope="col">Park Name</th>
           <th scope="col">Explore</th>
+          <th scope="col">Add to Collection</th>
           <th scope="col">Remove</th>
         </tr>
       </thead>
@@ -21,15 +22,20 @@
       
         
       <tr id="{{u.park_code}}">
-        <td>{{u.park_name}}</td>
+      <td>{{u.park_name}}</td>
 
-        <form>
-          <td>
-            <button class="btn btn-sm btn-outline-info" formaction="/park/{{u.park_code}}" formmethod="GET">See info</button>
-          </td>
-        </form>
-    
-        <td><button class="btn btn-sm btn-outline-danger" id="delete-bookmarked-btn">x</button></td>
+      <form>
+      <td>
+        <button class="btn btn-sm btn-outline-info" formaction="/park/{{u.park_code}}" formmethod="GET">See info</button>
+      </td>
+      </form>
+      <td>
+        <button class="btn btn-sm btn-outline-success" id="bookmark-to-collect-btn">{% if u.park_code in g.user.collected|map(attribute="park_code") %}Collected!{% else %}Collect{% endif %}</button>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-outline-danger" id="delete-bookmarked-btn">x</button>
+      </td>
+      
       </tr>
       {% endfor %}
     {% endif %}
