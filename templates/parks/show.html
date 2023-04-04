@@ -2,34 +2,65 @@
 
 {% block content %}
 
-<div id="parks-list">
+
 <h2>Topic: {{parks['data'][0]['name']}}</h2>
   
 
 <!-- Card -->
-<div class="row">
-  {% for park in parks['data'][0]['parks']%}
-  <div class="col-lg-3 col-md-4">
-    <div class="card h-100">
-      <!-- <img class="card-img-top" id="park-img" src="" alt="{{park['fullName']}} image"> -->
-      <div class="card-body">
-        <h6 class="card-title">{{park['fullName']}} </h6>
-        <p class="card-text">Location: {{park['states']}}</p>
-        
-        <form>
-          <button class="btn btn-outline-info btn-sm" formaction="/park/{{park['parkCode']}}" formmethod="GET">
-            Learn more
-          </button>
-        </form>
+<!-- <div id="parks-list">
+  <div class="row">
+    {% for park in parks['data'][0]['parks']%}
+    <div class="col-lg-3 col-md-4">
+      <div class="card h-100 single-park">
+        <div class="card-body">
+          <h6 class="card-title">{{park['fullName']}} </h6>
+          <p class="card-text">Location: {{park['states']}}</p>
+          
+          <form>
+            <button class="btn btn-outline-info btn-sm" formaction="/park/{{park['parkCode']}}" formmethod="GET">
+              Learn more
+            </button>
+          </form>
+        </div>
       </div>
     </div>
+    {% endfor %}
+  </div> 
+</div> -->
+
+
+<form>
+  <ul id="paginated-list">
+    {% for park in parks['data'][0]['parks']%}
+    
+    <li>{{park['fullName']}} Location: {{park['states']}} 
+      
+      <button class="btn btn-outline-info btn-sm" formaction="/park/{{park['parkCode']}}" formmethod="GET">
+        Learn more
+      </button>
+    
+    </li>
+ 
+    {% endfor %}
+  </ul>
+</form>
+
+
+<nav class="pagination-container">
+  <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+    &lt;
+  </button>
+  
+  <div id="pagination-numbers">
   </div>
-  {% endfor %}
-</div> 
+  
+  <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+    &gt;
+  </button>
+</nav>
 
 
 
-</div>
 
 
 {% endblock %}
