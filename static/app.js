@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function(){
   ////// Park.html //////
   // Toggle bookmark icon to add/remove park from bookmark section 
   async function toggleParkBookmark(e){
-    e.preventDefault()
+    e.preventDefault();
     const tgt = $(e.target);
     const bookmarkBtn = tgt.closest('button');
     const parkCode = bookmarkBtn.attr('id');
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function(){
    
   // Toggle 'collect' button to add/remove park from collected section 
   async function toggleParkCollect(e){
-    e.preventDefault()
+    e.preventDefault();
     const tgt = $(e.target);
     const collectBtn = tgt.closest('button');
     const parkCode = collectBtn.attr('id');
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function(){
   ////// Bookmarked.html //////
   // Delete park from bookmark section
   async function deleteParkFromBookmarked(e){
-    e.preventDefault()
+    e.preventDefault();
     const tgt = $(e.target);
     const closestTr = tgt.closest('tr');
     const parkCode = closestTr.attr('id');
@@ -136,6 +136,26 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   $('button#delete-bookmarked-btn').on('click', deleteParkFromBookmarked);
+  
+  
+  async function toggleCollectFromBookmark(e){
+    e.preventDefault();
+    const tgt = $(e.target);
+    const btn = tgt.closest('button')
+    const closestTr = tgt.closest('tr');
+    const parkCode = closestTr.attr('id');
+    const parkName = closestTr.find('td:eq(0)').text();
+    
+    if(btn.text() == 'Collect'){
+      await axios.post('/api/collect', {parkCode, parkName});
+      btn.text('Collected!');
+    } else {
+      await axios.delete(`/api/collect/${parkCode}`);
+      btn.text('Collect');
+    }
+
+  }
+  $('button#bookmark-to-collect-btn').on('click', toggleCollectFromBookmark)
 
 
   ////// Collected.html //////
