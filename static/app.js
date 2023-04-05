@@ -80,6 +80,19 @@ document.addEventListener('DOMContentLoaded', function(){
     `
   }
 
+  //
+  function toggleShowTopics(){
+    const topicsBtn = $('#topics-btn i')
+    if(topicsBtn.hasClass('fa-chevron-down')){
+      $('#topics-list').removeClass('hidden');
+      topicsBtn.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+    }else{
+      $('#topics-list').addClass('hidden');
+      topicsBtn.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    }
+  }
+  $('#topics-btn').on('click', toggleShowTopics);
+
   ////// Park.html //////
   // Toggle bookmark icon to add/remove park from bookmark section 
   async function toggleParkBookmark(e){
@@ -194,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function(){
   
  
 
-  //listen for double click to remove card
+  // Delete card from collection
   async function deleteCollectedCard(e){
     e.preventDefault;
     const tgt = $(e.target);
@@ -205,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   $('div.collection').on('click', deleteCollectedCard);
 
-  //////
+  ////// Other //////
   // AJAX call to server API to save all parks to DB
   async function getParks(){
     await axios.get('api/parks');
