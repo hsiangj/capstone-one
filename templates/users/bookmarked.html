@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Bookmarked</h1>
+<h2>Bookmarked</h2>
 <table class="table table-striped">
  
-    
     {% if not user.bookmarked %}
     No parks bookmarked yet. Search for parks to get started! 
 
@@ -20,7 +19,6 @@
       <tbody>
       {% for u in user.bookmarked %}
       
-        
       <tr id="{{u.park_code}}">
       <td>{{u.park_name}}</td>
 
@@ -29,9 +27,15 @@
         <button class="btn btn-sm btn-outline-info" formaction="/park/{{u.park_code}}" formmethod="GET">See info</button>
       </td>
       </form>
+
       <td>
-        <button class="btn btn-sm btn-outline-success" id="bookmark-to-collect-btn">{% if u.park_code in g.user.collected|map(attribute="park_code") %}Collected!{% else %}Collect{% endif %}</button>
+        {% if u.park_code in g.user.collected|map(attribute="park_code")%}
+        <button class="btn btn-sm btn-outline-success collected" id="bookmark-to-collect-btn">Collected!</button>
+        {% else %}
+        <button class="btn btn-sm btn-outline-success" id="bookmark-to-collect-btn">Collect</button>
+        {% endif %}
       </td>
+
       <td>
         <button class="btn btn-sm btn-outline-danger" id="delete-bookmarked-btn">x</button>
       </td>
