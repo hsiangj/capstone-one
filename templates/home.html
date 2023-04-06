@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="home-div">
 <h1>Where to next?</h1>
-
+<p>Explore your next adventure by park name or browse by topics of interest.</p>
 <form autocomplete="off" class="form-inline" action="#">
   <div class="search-container form-group">
     <input name="q" id="q" class="form-control mr-2" placeholder="Search by park name">
     
-    <button class="btn btn-sm {{'btn-primary'}}" formaction="/park" formmethod="POST">
+    <button class="btn btn-sm btn-success" formaction="/park" formmethod="POST">
       <i class="fas fa-arrow-right"></i> 
     </button>
     
@@ -16,10 +17,10 @@
     <ul></ul>
   </div>
 </form>
+<br>
 
-
-<p>or browse by topics below:</p>
-<div id="topics-list"></div>
-  
+<h4>Browse by topics</h4>&nbsp;<button class="btn btn-sm btn-success" id="topics-btn"><i class="fas fa-chevron-down"></i></button>
+<div class="hidden" id="topics-list"></div>
+</div>
 
 {% endblock %}
