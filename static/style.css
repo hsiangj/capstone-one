@@ -18,7 +18,7 @@ a {
   /* display: flex; */
   min-height: 100vh;
   padding: 5rem 1rem;
-  text-align: center;
+  /* text-align: center; */
 }
 
 h4 {
@@ -27,6 +27,7 @@ h4 {
 
 h2 {
   font-family: 'Permanent Marker', cursive; 
+  text-align: center;
 }
 
 .btn-outline-success.collected {
@@ -46,9 +47,13 @@ h2 {
 /*---------------- HOME PAGE (LOGGED IN)----------------*/
 .home-div {
   margin: 5rem 0 0 0;
+  text-align: center;
 }
 
 /*---------------- COLLECTION ----------------*/
+.collection-blurb-div {
+  text-align: center;
+}
 
 .collection {
   display: flex;
@@ -113,6 +118,11 @@ h2 {
 .collection-card:hover .delete {
   visibility: visible;
   opacity: .7;
+}
+
+/*---------------- PROFILE ----------------*/
+.profile-action-btn {
+  margin: 15px 0;
 }
 
 /*---------------- SEARCH BAR & AUTOCOMPLETE ----------------*/
