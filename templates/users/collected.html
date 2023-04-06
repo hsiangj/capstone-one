@@ -2,11 +2,11 @@
 
 
 {% block content %}
-<h1>Collection</h1>
+<h2>Collection</h2>
 <div>
-Hello adventurer! 
+What an adventurer! 
 {% if user.collected|length > 0 %}
-Total parks collected: {{user.collected | length}} out of {{total}}
+You've collected: {{user.collected | length}} out of {{total}} parks
 {% else %}
 No collection yet. Go out and explore! 
 {% endif %}
@@ -23,8 +23,8 @@ No collection yet. Go out and explore!
       <img src="" alt="NPS photo">
     </div>
     <div class="collection-card-footer">
-      <span class="collection-card-title">{{u.park_name}}</span>
-      <span class="delete">remove from collection</span>
+      <p class="collection-card-title">{{u.park_name}}</p>
+      <p class="delete"><i class="far fa-trash-alt fa-lg"></i></p>
     </div>
     
   </div>
