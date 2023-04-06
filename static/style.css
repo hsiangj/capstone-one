@@ -15,10 +15,8 @@ a {
 
 .container {
   overflow: hidden;
-  /* display: flex; */
   min-height: 100vh;
   padding: 5rem 1rem;
-  /* text-align: center; */
 }
 
 h4 {
@@ -42,6 +40,15 @@ h2 {
 
 #park-actions {
   padding-bottom: .2em;
+}
+
+/*---------------- LOG IN/ SIGNUP ----------------*/
+.login-signup-div {
+  margin-top: 3rem;
+}
+
+.login-signup-div p {
+  text-align: center;
 }
 
 /*---------------- HOME PAGE (LOGGED IN)----------------*/
@@ -112,7 +119,6 @@ h2 {
   position: absolute;
   top: 80%;
   right: 5%; 
-  
 }
 
 .collection-card:hover .delete {
@@ -129,7 +135,6 @@ h2 {
 .search-container {
  width: 100%;
  position: relative;
-
 }
 
 #q {
@@ -147,7 +152,6 @@ h2 {
   top: 0;
   /* z-index: 1; */
   height: 2.5rem;
-  
 }
 
 #suggestions ul {
@@ -164,12 +168,14 @@ h2 {
 
 /*---------------- 404 ----------------*/
 .error-page {
-  background-image: url('https://img.freepik.com/free-photo/beautiful-shot-high-white-hilltops-mountains-covered-fog_181624-399.jpg?size=626&ext=jpg');
-  background-repeat: no-repeat;
-  height: 400px;
-  width: 100vh;
-  margin: 0 auto;
+  background-image: url('https://img.freepik.com/free-vector/blue-watercolor-mountains-background_23-2149250282.jpg?w=1380&t=st=1680815718~exp=1680816318~hmac=be31b91f2e32f249608f308c46c719f259471cc01bf13b812dcb6dc20f1b0825');
+  background-size: cover;
+  height: 500px;
+  box-shadow: 0 0 40px 50px white inset;
+  text-align: center;
+  padding: 120px 0;
 }
+
 
 /*---------------- PAGINATION ----------------*/
 .pagination-div {
@@ -257,12 +263,10 @@ h2 {
 
 .navbar-container .nav-items .nav-link:hover:after {
   transform: scaleX(1);
-
 }
 
 .navbar-container .nav-items .nav-link a:hover {
   filter: brightness(80%);
-
 }
 
 .navbar-container .nav-items .login-signup {
@@ -282,7 +286,6 @@ h2 {
 
 .navbar-container .nav-items .login-signup .button:hover {
   background: rgba(36, 255, 94, 0.642);
-
 }
 
 @media(max-width: 1000px){
@@ -296,7 +299,6 @@ h2 {
   .navbar-container .nav-items .login-signup .button {
     font-size: 0.9rem;
   }
-  
 }
 
 @media(max-width: 700px){
@@ -344,7 +346,6 @@ h2 {
 
   .navbar-container .nav-items.active {
     right: 0;
-    
   }
 }
 
