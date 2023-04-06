@@ -3,12 +3,13 @@
 
 {% block content %}
 
-<h1>Signup</h1>
-<p class="lead">Signup below to collect your next adventure! Already registered? <a href="/login">Login here</a></p>
+<div class="login-signup-div">
+<h2>Signup</h2>
+<p class="">Signup below to collect your next adventure! Already registered?&nbsp;<a href="/login">Login here </p></a>
 
 <form method="POST">
   {{form.hidden_tag()}}
-  <div class="row"> 
+  <div class="row justify-content-center"> 
     <div class="col-md-6">
       {% for field in form
         if field.widget.input_type != 'hidden' %}
@@ -21,10 +22,10 @@
         {% endfor %}
       </div>
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Sign me up</button>
+      <button type="submit" class="btn btn-success">Sign me up</button>
     </div>
   </div> 
 </form>
-
+</div>
 
 {% endblock %}
