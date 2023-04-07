@@ -27,14 +27,12 @@ connect_db(app)
 
 db.create_all()
 
-
-
 ##########
 # Homepage and error page
 @app.route('/')
 def homepage():
   """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
-  if g.user.id:
+  if g.user:
     return render_template('home.html')
   else:
     return render_template ('home-anon.html')
@@ -259,7 +257,7 @@ def get_all_parks():
 
 @app.route('/api/parks/names')
 def get_park_names():
-  """Return JSON of all park names."""
+  """Return JSON of all park names from database."""
   parks = Park.query.all()
   names = []
   for park in parks:
