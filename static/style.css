@@ -17,6 +17,10 @@ a {
   overflow: hidden;
   min-height: 100vh;
   padding: 5rem 1rem;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 h4 {
@@ -51,11 +55,36 @@ h2 {
   text-align: center;
 }
 
-/*---------------- HOME PAGE (LOGGED IN)----------------*/
+/*---------------- HOME PAGE (LOGGED IN) ----------------*/
 .home-div {
   margin: 5rem 0 0 0;
   text-align: center;
 }
+
+/*---------------- HOME ANONYMOUS ----------------*/
+.home-anon-div {
+  margin: 3rem 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.anon-text {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.anon-pic {
+  /* background-image: url('https://www.pngmart.com/files/5/Mountain-PNG-Image.png'); */
+  background-image: url('https://creazilla-store.fra1.digitaloceanspaces.com/cliparts/77137/mountain-clipart-md.png');
+  width: 400px;
+  height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+
 
 /*---------------- COLLECTION ----------------*/
 .collection-blurb-div {
