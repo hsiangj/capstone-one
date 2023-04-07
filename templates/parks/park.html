@@ -4,9 +4,18 @@
 <h1>{{park['data'][0]['fullName']}}</h1> 
 <div id="park-actions">
   <form>
-  <button class="btn btn-outline-primary btn-sm bookmark-btn" id="{{park_code}}">{% if park_code in g.user.bookmarked|map(attribute="park_code") %}Bookmarked!{% else %}Bookmark{% endif %}</button> 
+
+  {% if park_code in g.user.bookmarked|map(attribute="park_code") %}
+  <button class="btn btn-outline-primary btn-sm bookmark-btn bookmarked" id="{{park_code}}">Bookmarked!</button> 
+  {% else %}
+  <button class="btn btn-outline-primary btn-sm bookmark-btn" id="{{park_code}}">Bookmark</button> 
+  {% endif %}
   
-  <button class="btn btn-outline-success btn-sm collect-btn" id="{{park_code}}">{% if park_code in g.user.collected|map(attribute="park_code") %}Collected!{% else %}Collect{% endif %}</button>
+  {% if park_code in g.user.collected|map(attribute="park_code") %}
+  <button class="btn btn-outline-success btn-sm collect-btn collected" id="{{park_code}}">Collected!</button>
+  {% else %}
+  <button class="btn btn-outline-success btn-sm collect-btn" id="{{park_code}}">Collect</button>
+  {% endif %}
 
   <input type='button' value='Back' class="btn btn-outline-secondary btn-sm" onclick="history.go(-1)">
   </form>
@@ -15,21 +24,17 @@
   
 
 
-<div class="row">
-  <div class="col">
-    <img src="{{park['data'][0]['images'][0]['url']}}" class="park-img">
-   
-    
+<div class="row park">
+  <div class="col-md-6 park-img" >
+    <img src="{{park['data'][0]['images'][0]['url']}}">
   </div>
-  <div class="col">
-    <b>Description:</b>
+  <div class="col-md-6">
+    <u>Description:</u>
     <p>{{park['data'][0]['description'] }}</p>
-    <b>Direction Info:</b>
+    <u>Direction Info:</u>
     <p>{{park['data'][0]['directionsInfo'] }}</p>
-    
       
     <p><i class="fas fa-map-pin"></i> {{park['data'][0]['states']}}</p>
-      
    
     <i class="fas fa-info-circle"></i><a href="{{park['data'][0]['url']}}" target="a_blank"> Visit nps.gov</a>
   </div>

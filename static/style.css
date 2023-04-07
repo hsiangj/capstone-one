@@ -37,13 +37,34 @@ h2 {
   background-color: #28a745;
 }
 
+.btn-outline-primary.bookmarked {
+  color: white;
+  background-color: #007bff;
+}
+
+/*---------------- SINGLE PARK ----------------*/
+.park {
+  width: auto;
+  height: 550px;
+  margin: 5px;
+  padding: 3px;
+}
+
 .park-img {
-  width: 100%;
-  max-height: auto;
+  height: 65%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.park-img img {
+  max-height: 100%;
+  display: block;
+  margin: auto;
+  box-shadow: 5px 0 5px #444444;
 }
 
 #park-actions {
-  padding-bottom: .2em;
+  padding-bottom: .5em;
 }
 
 /*---------------- LOG IN/ SIGNUP ----------------*/
@@ -256,6 +277,7 @@ h2 {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 9999;
 }
 
 .navbar-container .logo-container a {

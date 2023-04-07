@@ -128,9 +128,11 @@ document.addEventListener('DOMContentLoaded', function(){
     if(collectBtn.text() == 'Collect'){
       await axios.post('/api/collect', {parkCode, parkName});
       collectBtn.text('Collected!');
+      collectBtn.addClass('collected');
     } else {
       await axios.delete(`/api/collect/${parkCode}`);
       collectBtn.text('Collect');
+      collectBtn.removeClass('collected');
     }
     }
 
@@ -162,9 +164,11 @@ document.addEventListener('DOMContentLoaded', function(){
     if(btn.text() == 'Collect'){
       await axios.post('/api/collect', {parkCode, parkName});
       btn.text('Collected!');
+      btn.addClass('collected')
     } else {
       await axios.delete(`/api/collect/${parkCode}`);
       btn.text('Collect');
+      btn.removeClass('collected')
     }
 
   }
