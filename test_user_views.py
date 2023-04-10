@@ -76,8 +76,9 @@ class UserViewTestCase(TestCase):
     db.session.commit()
 
   def test_show_bookmarked(self):
-    """Test show user bookmarked parks."""
+    """Test show user bookmarked parks and button text for collected park."""
     self.setup_bookmarked()
+    self.setup_collected()
 
     with self.client as c:
       with c.session_transaction() as sess:
@@ -91,6 +92,8 @@ class UserViewTestCase(TestCase):
     self.assertEqual(len(found), 2)
     self.assertIn('abcd', found[0].text)
     self.assertIn('efdg', found[1].text)
+    #test 'collect' column button text 
+    self.assertIn('Collected!', str(res.data))
 
   def test_unauthorized_show_bookmarked(self):
     """Test unauthorized access of another user's bookmarked parks."""
@@ -150,7 +153,7 @@ class UserViewTestCase(TestCase):
 
   def setup_collected(self):
     c1 = CollectedPark(park_code='abcd', park_name='park abcd', user_id= self.u1.id)
-    c2 = CollectedPark(park_code='efdg', park_name='park efdg', user_id= self.u1.id)
+    c2 = CollectedPark(park_code='mnop', park_name='park mnop', user_id= self.u1.id)
     db.session.add_all([c1,c2])
     db.session.commit()
 
@@ -221,6 +224,6 @@ class UserViewTestCase(TestCase):
 
       c = CollectedPark.query.all()
       self.assertEqual(len(c), 1)
-      self.assertIn('efdg', c[0].park_code)
-      
+      self.assertIn('mnop', c[0].park_code)
+
 
