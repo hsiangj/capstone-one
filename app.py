@@ -169,6 +169,7 @@ def edit_user():
   """Update profile for current user."""
   if not g.user:
     flash("Access unauthorized.", "danger")
+    return redirect('/')
 
   user = g.user
   form = EditForm(obj=user)
@@ -220,10 +221,9 @@ def show_collected(user_id):
     return redirect('/')
   
   user = User.query.get_or_404(user_id)
-
+    
   return render_template('users/collected.html', user=user, total=PARK_LIMIT)
-
-
+  
 ##########
 # API routes
 @app.route('/api/topics')
@@ -272,9 +272,13 @@ def get_park(parkCode):
                             params={'parkCode': parkCode, 'limit': PARK_LIMIT})
   return jsonify(one_park.json())
 
-@app.route('/api/bookmark', methods=['POST']) 
+@app.route('/api/bookmark', methods=['GET','POST']) 
 def add_bookmark():
   """Handle adding park to bookmarked table in database."""
+  if request.method == 'GET':
+    flash("Invalid request.", "warning")
+    return redirect('/')
+
   bookmark_park = BookmarkedPark(park_code=request.json['parkCode'], park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
   
   db.session.add(bookmark_park)
@@ -293,9 +297,13 @@ def delete_bookmark(parkCode):
   return jsonify(message= 'Deleted')
 
 
-@app.route('/api/collect', methods=['POST'])
+@app.route('/api/collect', methods=['GET','POST'])
 def add_collect():
   """Handle adding park to collected table in database."""
+  if request.method == 'GET':
+    flash("Invalid request.", "warning")
+    return redirect('/')
+  
   collected_park = CollectedPark(park_code=request.json['parkCode'], park_name=request.json['parkName'], user_id=(session[CURR_USER_KEY]))
 
   db.session.add(collected_park)
