@@ -17,14 +17,14 @@ PARK_LIMIT = 468
 
 app = Flask(__name__)
 app.app_context().push()
-uri = os.environ.get('DATABASE_URL', 'postgresql:///park_collector')
+uri = os.environ.get("DATABASE_URL", "postgresql:///park_collector")
 if uri.startswith("postgres://"):
   uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', "chamberofsecrets")
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "chamberofsecrets")
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
 debug = DebugToolbarExtension(app)
 connect_db(app)
