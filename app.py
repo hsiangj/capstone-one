@@ -8,7 +8,7 @@ import requests
 
 from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
-from secret import key
+from config import key
 
 app = Flask(__name__)
 app.app_context().push()
