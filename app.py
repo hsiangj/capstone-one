@@ -5,6 +5,7 @@ from flask import Flask, render_template, redirect, session, flash, request, g, 
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 import requests
+from dotenv import load_dotenv
 
 from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
@@ -17,7 +18,8 @@ if uri.startswith("postgres://"):
   uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-api_key = os.environ.get("NPS_API_KEY")
+load_dotenv()
+api_key = os.getenv("NPS_API_KEY")
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
