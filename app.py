@@ -259,8 +259,11 @@ def get_all_parks():
     new_park = Park(park_code=park_code, park_name=park_name, park_state=park_state)
     parks.append(new_park)
 
-  db.session.add_all(parks)
-  db.session.commit()
+  try:
+    db.session.add_all(parks)
+    db.session.commit()
+  except:
+    db.session.rollback()
 
   return jsonify(message= 'Success')
 
