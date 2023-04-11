@@ -10,17 +10,17 @@ from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
 from secret import key
 
-CURR_USER_KEY = 'curr_user'
-API_BASE_URL = "https://developer.nps.gov/api/v1"
-HEADERS = {"X-Api-Key":key}
-PARK_LIMIT = 468
-
 app = Flask(__name__)
 app.app_context().push()
+
 uri = os.environ.get("DATABASE_URL", "postgresql:///park_collector")
 if uri.startswith("postgres://"):
   uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
+
+api_key = os.environ.get("API_KEY", key)
+app.config["API_KEY"] = api_key
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "chamberofsecrets")
@@ -30,6 +30,11 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 
 db.create_all()
+
+CURR_USER_KEY = 'curr_user'
+API_BASE_URL = "https://developer.nps.gov/api/v1"
+HEADERS = {"X-Api-Key": api_key}
+PARK_LIMIT = 468
 
 ##########
 # Homepage and error page
