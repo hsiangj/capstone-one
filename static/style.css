@@ -126,6 +126,11 @@ h2 {
   
 }
 
+/*---------------- BOOKMARK ----------------*/
+.bookmark-blurb-div {
+  text-align: center;
+}
+
 /*---------------- COLLECTION ----------------*/
 .collection-blurb-div {
   text-align: center;
