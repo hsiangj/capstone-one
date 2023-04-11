@@ -17,8 +17,7 @@ if uri.startswith("postgres://"):
   uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-api_key = os.environ.get("API_KEY", "NPS_API_KEY")
-app.config["API_KEY"] = api_key
+api_key = os.environ.get("NPS_API_KEY")
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
