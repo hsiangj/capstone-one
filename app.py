@@ -1,4 +1,5 @@
 import os
+import re
 
 from flask import Flask, render_template, redirect, session, flash, request, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -16,7 +17,10 @@ PARK_LIMIT = 468
 
 app = Flask(__name__)
 app.app_context().push()
-app.config["SQLALCHEMY_DATABASE_URI"] = (os.environ.get('DATABASE_URL', 'postgresql:///park_collector'))
+uri = os.environ.get('DATABASE_URL', 'postgresql:///park_collector')
+if uri.startswith("postgres://"):
+  uri = uri.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', "chamberofsecrets")
