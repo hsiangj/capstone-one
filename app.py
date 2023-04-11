@@ -8,7 +8,6 @@ import requests
 
 from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
-from config import key
 
 app = Flask(__name__)
 app.app_context().push()
@@ -18,7 +17,7 @@ if uri.startswith("postgres://"):
   uri = uri.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-api_key = os.environ.get("API_KEY", key)
+api_key = os.environ.get("API_KEY", "NPS_API_KEY")
 app.config["API_KEY"] = api_key
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
