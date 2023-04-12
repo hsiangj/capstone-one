@@ -18,7 +18,10 @@ View the application [here](https://park-collector.herokuapp.com/ "Park Collecto
 * SQLAlchemy
 
 ### Components
-
+<img src="/screenshots/main.png" alt="Park Collector main" width="auto" height="200px">
+<img src="/screenshots/search.png" alt="Park Collector main" width="auto" height="200px">
+<img src="/screenshots/bookmarked.png" alt="Park Collector main" width="auto" height="200px">
+<img src="/screenshots/collection.png" alt="Park Collector main" width="auto" height="200px">
 
 ### Standard User Flow
 *Signup/Login*
