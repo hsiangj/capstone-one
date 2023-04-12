@@ -11,25 +11,26 @@ from models import db, connect_db, User, BookmarkedPark, CollectedPark, Park
 from forms import RegisterForm, LoginForm, EditForm
 
 app = Flask(__name__)
-app.app_context().push()
 
-uri = os.environ.get("DATABASE_URL", "postgresql:///park_collector")
-if uri.startswith("postgres://"):
-  uri = uri.replace("postgres://", "postgresql://", 1)
-app.config["SQLALCHEMY_DATABASE_URI"] = uri
+with app.app_context():
 
-load_dotenv()
-api_key = os.getenv("NPS_API_KEY")
+  uri = os.environ.get("DATABASE_URL", "postgresql:///park_collector")
+  if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+  app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = False
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "chamberofsecrets")
-app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+  load_dotenv()
+  api_key = os.getenv("NPS_API_KEY")
 
-debug = DebugToolbarExtension(app)
-connect_db(app)
+  app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+  app.config["SQLALCHEMY_ECHO"] = False
+  app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "chamberofsecrets")
+  app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
-db.create_all()
+  debug = DebugToolbarExtension(app)
+  connect_db(app)
+
+  db.create_all()
 
 CURR_USER_KEY = 'curr_user'
 API_BASE_URL = "https://developer.nps.gov/api/v1"
@@ -38,6 +39,7 @@ PARK_LIMIT = 468
 
 ##########
 # Homepage and error page
+
 @app.route('/')
 def homepage():
   """Show homepage. If logged in: search bar. Anonymous user: sign up prompt."""
@@ -173,6 +175,7 @@ def get_single_park(park_code):
 
 ##########
 # User routes
+
 @app.route('/users/profile', methods = ['GET', 'POST'])
 def edit_user():
   """Update profile for current user."""
@@ -235,6 +238,7 @@ def show_collected(user_id):
   
 ##########
 # API routes
+
 @app.route('/api/topics')
 def list_topics():
   """Return JSON with all park topics."""
