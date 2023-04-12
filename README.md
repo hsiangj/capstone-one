@@ -1,4 +1,6 @@
-# Capstone One: Park Collector
+# Park Collector
+
+This repository is completed as part of capstone one of Springboard Software Engineering Career Track.
 
 ### Application Description
 "Park Collector" is a web app for users to explore, bookmark, and track visited national parks using data from the National Park Service API. Visited parks are "collected" and displayed as card collection with counts to encourage users to explore more.
