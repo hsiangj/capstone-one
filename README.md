@@ -17,11 +17,18 @@ View the application [here](https://park-collector.herokuapp.com/ "Park Collecto
 * Flask
 * SQLAlchemy
 
-### Components
-<img src="/screenshots/main.png" alt="Park Collector main" width="auto" height="200px">
-<img src="/screenshots/search.png" alt="Park Collector main" width="auto" height="200px">
-<img src="/screenshots/bookmarked.png" alt="Park Collector main" width="auto" height="200px">
-<img src="/screenshots/collection.png" alt="Park Collector main" width="auto" height="200px">
+### Preview
+Home page before signup/login
+<img src="/screenshots/main.png" alt="Park Collector main" width="auto" height="250px">
+
+Search by park name or topics
+<img src="/screenshots/search.png" alt="Park Collector search" width="auto" height="250px">
+
+User's bookmarked section
+<img src="/screenshots/bookmarked.png" alt="Park Collector bookmarked" width="auto" height="250px">
+
+User's collection
+<img src="/screenshots/collection.png" alt="Park Collector collection" width="auto" height="250px">
 
 ### Standard User Flow
 *Signup/Login*
