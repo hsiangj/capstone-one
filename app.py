@@ -24,7 +24,7 @@ with app.app_context():
 
   app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
   app.config["SQLALCHEMY_ECHO"] = False
-  app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "chamberofsecrets")
+  app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "SECRET_KEY_LOCAL")
   app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
   debug = DebugToolbarExtension(app)
