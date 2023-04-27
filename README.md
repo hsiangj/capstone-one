@@ -7,7 +7,7 @@ This repository is completed as part of capstone one of Springboard Software Eng
 
 View the application [here](https://park-collector.herokuapp.com/ "Park Collector") on Heroku.
 
-### Technologly Stack
+### Technology Stack
 * HTML5
 * CSS3
 * Bootstrap 4
