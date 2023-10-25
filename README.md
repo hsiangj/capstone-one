@@ -5,7 +5,7 @@ This repository is completed as part of capstone one of Springboard Software Eng
 ### Application Description
 "Park Collector" is a web app for users to explore, bookmark, and track visited national parks using data from the National Park Service API. Visited parks are "collected" and displayed as card collection with counts to encourage users to explore more.
 
-View the application [here](https://park-collector.herokuapp.com/ "Park Collector") on Heroku.
+View the application [here](https://park-collector.onrender.com/ "Park Collector") on Render.
 
 ### Technology Stack
 * HTML5
