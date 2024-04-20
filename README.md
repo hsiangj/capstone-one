@@ -7,9 +7,9 @@ This repository is completed as part of capstone one of Springboard Software Eng
 
 View the application [here](https://park-collector.onrender.com/ "Park Collector") on Render.
 
-Demo credentials -
-Username: testuser
-Password: testuser
+Demo credentials:  
+Username: testuser  
+Password: testuser  
 
 ### Technology Stack
 * HTML5
